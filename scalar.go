@@ -79,6 +79,18 @@ func (s *Scalar) Set(x *Scalar) *Scalar {
 	return s
 }
 
+// SetBytes sets s = x, where x is a 32-byte little-endian integer.
+// If x is not of the right length, SetBytes returns nil and an error,
+// and the receiver is unchanged.
+func (s *Scalar) SetBytes(x []byte) (*Scalar, error) {
+	if len(x) != 32 {
+		return nil, errors.New("edwards25519: invalid SetBytes input length")
+	}
+
+	copy(s.s[:], x)
+	return s, nil
+}
+
 // SetUniformBytes sets s = x mod l, where x is a 64-byte little-endian integer.
 // If x is not of the right length, SetUniformBytes returns nil and an error,
 // and the receiver is unchanged.
